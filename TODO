@@ -1,0 +1,40 @@
+TODO: give pinecone account additional data
+TODO: send embedding to pinecone to retrieve relevant data and send it to ai model
+
+FROM HEADSTARTER SITE
+
+Level 1:
+
+DONE: Basic chatbot
+
+Level 2:
+
+DONE: Gen AI chatbot
+
+Level 3:
+
+TODO: Deploy to AWS EC2 (curently working on)
+
+TODO: Change from OpenAI to Bedrock (not super important)
+
+Level 4:
+
+TODO: Implement RAG (currently working on)
+
+TODO: Create LLM orchestration (what does this mean, look more into)
+
+Bonus:
+
+TODO: Add multi-language (OpenAI already responds in different languages so not sure here)
+
+TODO: Add user auth
+
+TODO: Implement feedback
+
+Additional:
+
+TODO: Change up frontend design possibly
+
+TODO: Make responsive
+
+TODO: Frontend for feedback / user auth
