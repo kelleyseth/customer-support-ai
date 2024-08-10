@@ -17,7 +17,7 @@ Please provide details about your issue or question so I can assist you more eff
 
 export async function POST(req) {
 
-    //OpenAI & Pinecone, needs keys in .env.local file
+    // OpenAI & Pinecone, needs keys in .env.local file
     const openai = new OpenAI()
     const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY })
     const index = pc.index('headstart')
@@ -26,26 +26,34 @@ export async function POST(req) {
 
     const userInput = data[data.length - 1].content
 
-    //OpenAI embedding to give to Pinecone
+    // OpenAI embedding to give to Pinecone
     const embedding = await openai.embeddings.create({
         model: 'text-embedding-ada-002',
         input: userInput,
         encoding_format: 'float'
     })
 
-    // Checks embedding of user input and the embedding length
-    // console.log(embedding.data[0].embedding)
-    // console.log(embedding.data[0].embedding.length)
+    // Get data from pinecone vectors
+    const info = await index.namespace('ns1').query({
+        topK: 1,
+        vector: embedding.data[0].embedding,
+        includeValues: true,
+        includeMetadata: true
+      });
 
-    //Populate Pinecone index with data
-    //Give Pinecone the embedded user input
+    // Get meta data
+    const pcInfo = info.matches[0].metadata.content
 
-    //Give OpenAI new data with Pinecone, not just user input
+    // Give OpenAI new data from Pinecone, not just user input
     const completion = await openai.chat.completions.create({
         messages: [
             {
                 role: 'system',
                 content: systemPrompt,
+            },
+            {
+                role: 'user',
+                content: pcInfo,
             },
             ...data,
         ],
